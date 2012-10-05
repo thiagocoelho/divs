@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Div's</title>
+		<link rel="stylesheet" type="text/css" href="css/application.css">
+		<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+		<script type="text/javascript" src="js/greensock/plugins/CSSPlugin.min.js"></script>
+		<script type="text/javascript" src="js/greensock/easing/EasePack.min.js"></script>
+		<script type="text/javascript" src="js/greensock/TweenLite.min.js"></script>
+		<script type="text/javascript">
+			jQuery(function() {
+				var container = $("#container");
+
+				var cols = 10;
+				var rows = 10;
+
+				var counter = cols * rows;
+
+				var screenWidth = window.innerWidth;
+				var screenHeight = window.innerHeight;
+
+				var quadWidth = Math.ceil(screenWidth / rows);
+				var quadHeight = Math.ceil(screenHeight / cols);
+
+				var divs = [];
+
+				for (var i = 0; i < counter; i++)
+				{
+					var div = $("<div class='quad'></div>");
+						div.css("width",quadWidth);
+						div.css("height", quadHeight);
+						div.css("background-color", "#000000");
+						div.css("top", Math.ceil((screenHeight / 2) - (quadHeight / 2)));
+						div.css("left", Math.ceil((screenWidth / 2) - (quadWidth / 2)));
+						div.hover(function() {
+							TweenLite.to(this, 0.5, {css:{backgroundColor:"#FF0000"}, ease:Expo.easeOut});
+						}, function () {
+							TweenLite.to(this, 0.5, {css:{backgroundColor:"#000000"}, ease:Expo.easeOut, delay: 0.3});
+						});
+
+					var obj = {};
+						obj.quad = div;
+						obj.x = Math.ceil((i % rows) * quadWidth);
+						obj.y = Math.ceil(parseInt(i / cols) * quadHeight);
+
+					divs.push(obj);
+
+					container.append(div);
+
+					TweenLite.to(div, 0.5, {css:{top:obj.y, left: obj.x}, ease:Expo.easeOut, delay:i*0.1});
+				}
+			})
+		</script>
+	</head>
+	<body>
+		<div id="container">
+			
+		</div>
+	</body>
+</html>
