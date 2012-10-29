@@ -24,6 +24,17 @@
 
 				var divs = [];
 
+				var mouseX;
+				var mouseY;
+				var radius = 50;
+
+				container.mousemove(function (e){
+					mouseX = e.pageX;
+					mouseY = e.pageY;
+
+					console.log(mouseX, mouseY);
+				});
+
 				for (var i = 0; i < counter; i++)
 				{
 					var div = $("<div class='quad'></div>");
@@ -48,6 +59,46 @@
 					container.append(div);
 
 					TweenLite.to(div, 0.5, {css:{top:obj.y, left: obj.x}, ease:Expo.easeOut, delay:i*0.1});
+				}
+
+				TweenLite.ticker.addEventListener("tick", renderEquation);
+
+				// window.setTimeout(function(){
+				// 	TweenLite.ticker.removeEventListener("tick", renderEquation);
+				// 	console.log("remove ticker");
+				// }, 1000)
+
+				function renderEquation()
+				{
+					var p1 = {};
+					p1.x = mouseX;
+					p1.y = mouseY;
+
+					var p2 = {};
+
+					for (div in divs)
+					{
+						p2.x = divs[div].x;
+						p2.y = divs[div].y;
+						// console.log(divs[div], "divs");
+
+						if (getDist(p1, p2) < radius){
+							divs[div].quad.css("top", p1.y + 20);
+							divs[div].quad.css("left", p1.x + 20);
+						}
+					}
+				}
+
+				function getDist(p1, p2)
+				{
+					var dx = p1.x - p2.x;
+					var dy = p1.y - p2.y;
+
+					var dist = Math.sqrt(dx*dx + dy*dy);
+
+					// console.log(dist);
+
+					return dist;
 				}
 			})
 		</script>
