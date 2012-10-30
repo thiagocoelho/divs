@@ -26,7 +26,7 @@
 
 				var mouseX;
 				var mouseY;
-				var radius = 50;
+				var radius = 100;
 
 				container.mousemove(function (e){
 					mouseX = e.pageX;
@@ -80,11 +80,26 @@
 					{
 						p2.x = divs[div].x;
 						p2.y = divs[div].y;
+
+						var angle = Math.atan2(p1.y - p2.y, p1.x - p2.x);
 						// console.log(divs[div], "divs");
 
-						if (getDist(p1, p2) < radius){
-							divs[div].quad.css("top", p1.y + 20);
-							divs[div].quad.css("left", p1.x + 20);
+						var dist = getDist(p1, p2);
+
+						var diff = radius - dist;
+
+						if (dist < radius){
+							var posX = Math.cos(angle) * diff;
+							var posY = Math.sin(angle) * diff;
+							divs[div].quad.css("top", p1.y + radius);
+							divs[div].quad.css("left", p1.x + radius);
+							TweenLite.to(divs[div].quad, 0.5, {css:{backgroundColor:"#FF0000"}, ease:Expo.easeOut});							
+						}
+						else
+						{
+							divs[div].quad.css("top", p2.y);
+							divs[div].quad.css("left", p2.x);
+							TweenLite.to(divs[div].quad, 0.5, {css:{backgroundColor:"#000000"}, ease:Expo.easeOut});
 						}
 					}
 				}
